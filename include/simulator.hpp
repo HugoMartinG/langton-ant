@@ -1,23 +1,23 @@
-#ifndef SIMULATOR_
-#define SIMULATOR_
+#ifndef SIMULATOR_HPP
+#define SIMULATOR_HPP
 
+#include <vector>
+#include <string>
 #include "tape.hpp"
 #include "ant.hpp"
 
 class Simulator {
-    private:
-        Tape tape_; //cinta
-        Ant ant_; // hormiga
-        int steps_; //pasos realizados
-    
-    public:
-        // Constructores
-        Simulator(Tape t, Ant a) : tape_(t), ant_(a), steps_(0) {}
-        Simulator() : tape_(), ant_(), steps_(0) {}
+private:
+    Tape tape_;
+    std::vector<Ant*> ants_;
+
+public:
+    Simulator(const std::string& filename);
+    ~Simulator();
+    friend std::ostream& operator<<(std::ostream& os, const Simulator& sim);
 
 
-        void Run();
-        void SavePrompt(const std::string& filename);
-    };
+    void Run();
+};
 
 #endif

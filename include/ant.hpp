@@ -1,37 +1,48 @@
-#ifndef ANT_
-#define ANT_
+#ifndef ANT_HPP
+#define ANT_HPP
 
-#include <iostream>
-#include <vector>
-#include <fstream>
-#include <sstream>
 #include "tape.hpp"
 
-enum Direction { LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3 };
+enum class Direction { LEFT, RIGHT, UP, DOWN };
 
 class Ant {
-    private:
-        int x_, y_; // Posición actual de la hormiga
-        Direction direccion_; // Dirección actual de la hormiga
-    
-    public:
-        //Constructores Y destructor
-        Ant(int x0, int y0, Direction d) : x_(x0), y_(y0), direccion_(d) {}
-        Ant() : x_(0), y_(0), direccion_(UP) {}
-        ~Ant() {}
-    
-        // Métodos
-        bool Move(Tape& tape);
-        void TurnLeft();
-        void TurnRight();
-        void StepForward();
+protected:
+    int x_, y_;
+    Direction dir_;
 
-        friend std::ostream& operator<<(std::ostream& os, const Ant& a);
+public:
+    Ant(int x, int y, Direction d) : x_(x), y_(y), dir_(d) {}
+    virtual ~Ant() {}
 
-        //Getters
-        int GetX() { return x_; }
-        int GetY() { return y_; }
-        Direction GetDir() { return direccion_; }
-    };
-    
+    virtual void Move(Tape& tape) = 0;   // método abstracto
+    virtual char GetSymbol() const = 0;
+
+    void TurnLeft();
+    void TurnRight();
+    void StepForward();
+
+    int GetX() const { return x_; }
+    int GetY() const { return y_; }
+};
+
+
+// ===== Hormiga DI =====
+class Ant_DI : public Ant {
+public:
+    Ant_DI(int x, int y, Direction d);
+
+    void Move(Tape& tape) override;
+    char GetSymbol() const override { return 'A'; }
+};
+
+
+// ===== Hormiga DDII =====
+class Ant_DDII : public Ant {
+public:
+    Ant_DDII(int x, int y, Direction d);
+
+    void Move(Tape& tape) override;
+    char GetSymbol() const override { return 'B'; }
+};
+
 #endif

@@ -1,35 +1,51 @@
-#ifndef TAPE_
-#define TAPE_
+#ifndef TAPE_HPP
+#define TAPE_HPP
 
-#include <iostream>
 #include <vector>
-#include <fstream>
-#include <sstream>
+#include <iostream>
+
+// Tipo enumerado con ámbito para los colores
+enum class CellColor : int {
+    White = 0,
+    Black = 1,
+    Red = 2,
+    Green = 3,
+    Blue = 4,
+    Yellow = 5,
+    Magenta = 6,
+    Cyan = 7,
+    Brown = 8,
+};
 
 class Tape {
-    private:
-        int size_x_, size_y_; // Dimensiones de la cinta
-        std::vector<std::vector<bool>> cells; // Matriz que representa las celdas de la cinta
+private:
+    int size_x_;
+    int size_y_;
+    int num_colors_;
+    std::vector<std::vector<CellColor>> cells_;
 
-    public:
-        // Constructores
-        Tape(int x, int y) : size_x_(x), size_y_(y), cells(y, std::vector<bool>(x, 0)) {}
-        Tape() : size_x_(0), size_y_(0), cells() {}
+public:
+    // Constructores
+    Tape(int x, int y, int colors);
+    Tape();
 
-        // Setters
-        void SetBlack(int x, int y); 
-        void SetWhite(int x, int y);
+    // Comprobación de límites
+    bool InBounds(int x, int y) const;
 
-        // Getters
-        int GetCell(int x, int y) const;
-        bool InBounds(int x, int y) const;
-        int GetSizeX() const { return size_x_; }
-        int GetSizeY() const { return size_y_; }
+    // Getters
+    CellColor GetColor(int x, int y) const;
+    int GetNumColors() const { return num_colors_; }
+    int GetSizeX() const { return size_x_; }
+    int GetSizeY() const { return size_y_; }
 
-        // Sobrecarga del operador de salida
-        friend std::ostream& operator<<(std::ostream& os, const Tape& t);
+    // Setters
+    void SetColor(int x, int y, CellColor color);
 
-        void save(std::ofstream& out) const;
+    // Cambio cíclico de color
+    void NextColor(int x, int y);
+
+    // Salida por pantalla
+    friend std::ostream& operator<<(std::ostream& os, const Tape& t);
 };
 
 #endif

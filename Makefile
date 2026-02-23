@@ -35,6 +35,6 @@ clean:
 
 # Ejecutar con fichero de entrada
 run:
-	./$(TARGET) input/entrada2.txt
+	./$(TARGET) input/test.txt
 
 .PHONY: all clean run
